@@ -6,13 +6,13 @@ package checkout
 /**
   * Stock keeping unit
   *
-  * @param item          item
-  * @param unit_price    unit price
-  * @param special_price special price
+  * @param item         item
+  * @param unitPrice    unit price
+  * @param specialPrice special price
   */
 case class SKU(item: Char,
-               unit_price: Int,
-               special_price: Map[Int, Int] = Map())
+               unitPrice: Int,
+               specialPrice: Map[Int, Int] = Map())
 
 /**
   * Basket
@@ -50,7 +50,7 @@ object Checkout {
     * @param x    number of items to be bought
     */
   def getBestUnit(list: Map[Int, Int], x: Int): Int = {
-    list.takeWhile(i => i._1 <= x).lastOption.getOrElse((x, x))._1
+    list.takeWhile(_._1 <= x).lastOption.getOrElse((x, x))._1
   }
 
   /**
@@ -72,7 +72,7 @@ object Checkout {
     totalList.map {
       case (sku@SKU(i, up, sp), count) =>
         val bestUnitsOffer: Int = getBestUnit(sp, count)
-        sku.special_price.get(bestUnitsOffer) match {
+        sku.specialPrice.get(bestUnitsOffer) match {
           case Some(bestValue) =>
             val (bestUnits: Int, remainder: Int) = getQuotientRemainder(count, bestUnitsOffer)
             (bestUnits * bestValue) + (remainder * up)
